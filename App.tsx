@@ -89,6 +89,7 @@ function App(): JSX.Element {
           <Section title="Learn More">
             Read the docs to discover what to do next:
           </Section>
+          <Text className="text-red-500">HOLA</Text>
           <LearnMoreLinks />
         </View>
       </ScrollView>
