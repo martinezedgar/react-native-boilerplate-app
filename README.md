@@ -35,9 +35,9 @@ npm run android
 npm run ios
 ```
 
-# Installing Core Libraries
+# Project Setup
 
-## Styling (NativeWind)
+## Installing NativeWind
 
 ### Step 1:
 
@@ -97,3 +97,78 @@ npm run start --reset-cache
 Start styling.
 
 `<Text className="text-red-500">This is a text.</Text>`
+
+
+## Setting Up Fastlane
+
+### Create The Fasfile
+
+Create a folder named `./fastlane` in the root directory of the project
+
+Inside that folder create a file named `Fasfile` with the following content:
+
+```
+platform :android do
+    desc 'Build the Android application.'
+    lane :build do
+        gradle(task: 'clean', project_dir: 'android/')
+        gradle(task: 'assemble', build_type: 'release', project_dir: 'android/')
+    end
+end
+```
+
+### Installing rbenv
+
+#### Step 1
+
+Install rbenv.
+
+```bash
+brew install rbenv ruby-build
+```
+
+#### Step 2
+
+Install a ruby version.
+
+```bash
+rbenv install 3.0.4
+```
+
+#### Step 3
+
+Apply a version to your local environment.
+
+```bash
+rbenv local 3.0.4
+```
+
+### Installing Bundler
+
+#### Step 1
+
+Run the following command:
+
+```bash
+gem install bundler
+```
+
+#### Step 2
+
+Add `gem "fastlane"` to the ./Gemfile in the root directory of the project.
+
+#### Step 3
+
+Run the following command:
+
+```bash
+bundle update
+```
+
+### Execute Fastlane
+
+Run the following command:
+
+```bash
+bundler exec fastlane android build
+```
