@@ -23,6 +23,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Build the Android application.
 
+### android beta
+
+```sh
+[bundle exec] fastlane android beta
+```
+
+Build and upload to App Center.
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.

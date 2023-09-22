@@ -11,11 +11,7 @@ First, you will need to start **Metro**, the JavaScript _bundler_ that ships _wi
 To start Metro, run the following command from the _root_ of your React Native project:
 
 ```bash
-# using npm
 npm start
-
-# OR using Yarn
-yarn start
 ```
 
 ## Step 2: Start your Application
@@ -31,7 +27,6 @@ npm run android
 ### For iOS
 
 ```bash
-# using npm
 npm run ios
 ```
 
@@ -99,7 +94,7 @@ Start styling.
 `<Text className="text-red-500">This is a text.</Text>`
 
 
-## Setting Up Fastlane
+## Set Up Fastlane
 
 ### Create The Fasfile
 
@@ -117,11 +112,11 @@ platform :android do
 end
 ```
 
-### Installing rbenv
+### Install rbenv
 
 #### Step 1
 
-Install rbenv.
+Install rbenv using `brew`
 
 ```bash
 brew install rbenv ruby-build
@@ -143,7 +138,7 @@ Apply a version to your local environment.
 rbenv local 3.0.4
 ```
 
-### Installing Bundler
+### Install Bundler
 
 #### Step 1
 
@@ -165,10 +160,168 @@ Run the following command:
 bundle update
 ```
 
-### Execute Fastlane
+### Generate an upload key
 
-Run the following command:
+#### Step 1
+
+Find the JDK bin folder path by running the following command:
 
 ```bash
-bundler exec fastlane android build
+/usr/libexec/java_home
+```
+
+The output of this command will be something like this:
+
+`/Library/Java/JavaVirtualMachines/jdk-XX.jdk/Contents/Home`
+
+#### Step 2
+
+Navigate to the JDK bin folder.
+
+```bash
+cd /Library/Java/JavaVirtualMachines/jdk-XX.jdk/Contents/Home
+```
+
+Generate an upload key.
+
+```bash
+sudo keytool -genkey -v -keystore my-upload-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
+```
+
+>Make sure to edit the key and alias name.
+
+#### Step 3
+
+Move the key to the App `android/app` directory.
+
+```bash
+sudo mv my-release-key.keystore AppName/android/app
+```
+
+>Make sure to edit the app directory path.
+
+#### Step 4
+
+Set up Gradle variables. Edit the file `~/.gradle/gradle.properties` with the following content:
+
+```
+APPNAME_UPLOAD_STORE_FILE=my-upload-key.keystore
+APPNAME_UPLOAD_KEY_ALIAS=my-key-alias
+APPNAME_UPLOAD_STORE_PASSWORD=*****
+APPNAME_UPLOAD_KEY_PASSWORD=*****
+```
+
+>This is the information entered at the upload key creation prompt.
+
+#### Step 5
+
+Add the signing configuration to the app's Gradle config. Edit the file `android/app/build.gradle` in the project folder.
+
+```
+...
+android {
+    ...
+    defaultConfig { ... }
+    signingConfigs {
+        release {
+            if (project.hasProperty('APPNAME_UPLOAD_STORE_FILE')) {
+                storeFile file(APPNAME_UPLOAD_STORE_FILE)
+                storePassword APPNAME_UPLOAD_STORE_PASSWORD
+                keyAlias APPNAME_UPLOAD_KEY_ALIAS
+                keyPassword APPNAME_UPLOAD_KEY_PASSWORD
+            }
+        }
+    }
+    buildTypes {
+        release {
+            ...
+            signingConfig signingConfigs.release
+        }
+    }
+}
+...
+```
+
+>Make sure to use here the same variable names used in the `~/.gradle/gradle.properties` file.
+
+#### Step 6
+
+Run the following command to build the app:
+
+```bash
+bundle exec fastlane android build
+```
+
+## Set up a Beta Deployment to App Center
+
+### Create an App Center account
+
+#### Step 1
+
+Go to [**App Center**](https://appcenter.ms/)
+
+#### Step 2
+
+Click on `Start Free` and create an account.
+
+#### Step 3
+
+Click on `Add new app` and enter the required information.
+
+#### Step 4
+
+Once the app is created go to the `Settings` menu on the left. In `Settings` go to `App API tokens` and create a new token. Copy the token at this moment, this is the only time that it would be possible and you will need it in the next step.
+
+#### Step 5
+
+Add the following environment variables to the environment variables file.
+
+```
+TEST_APPCENTER_API_TOKEN="123456asdfg"
+TEST_APPCENTER_OWNER_NAME="owner-name"
+APPCENTER_APP_NAME="my-app"
+APPCENTER_DISTRIBUTE_APK="./android/app/build/outputs/apk/release/app-release.apk"
+```
+
+>The value for `TEST_APPCENTER_OWNER_NAME` and `APPCENTER_APP_NAME` should be written as they appear on the App Center URL (e.g. `https://appcenter.ms/users/owner-name/apps/app-name/settings`)
+
+#### Step 6
+
+Install the Fastlane App Center plugin. From the root of the project run the following command:
+
+```bash
+bundle exec fastlane add_plugin app_center
+```
+
+#### Step 7
+
+Add another lane inside the android platform. The file should look like this:
+
+```
+platform :android do
+    desc 'Build the Android application.'
+    lane :build do
+        gradle(task: 'clean', project_dir: 'android/')
+        gradle(task: 'assemble', build_type: 'release', project_dir: 'android/')
+    end
+
+    desc 'Build and upload to App Center.'
+    lane :beta do
+    build
+    appcenter_upload(
+        api_token: ENV["TEST_APPCENTER_API_TOKEN"],
+        owner_name: ENV["TEST_APPCENTER_OWNER_NAME"],
+        app_name: ENV["APPCENTER_APP_NAME"],
+        apk: ENV["APPCENTER_DISTRIBUTE_APK"]
+        )
+    end
+end
+```
+
+#### Step 8
+
+Run the following command to deploy a beta version to App Center.
+
+```bash
+bundle exec fastlane android beta
 ```
