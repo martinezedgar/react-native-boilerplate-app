@@ -325,3 +325,13 @@ Run the following command to deploy a beta version to App Center.
 ```bash
 bundle exec fastlane android beta
 ```
+
+## Navigation
+
+### Installation
+
+For navigation setup follow **ALL** the installation steps listed [here](https://reactnavigation.org/docs/getting-started/)
+
+### Type Checking
+
+For Navigation type checking setup follow the steps listed [here](https://reactnavigation.org/docs/typescript)
