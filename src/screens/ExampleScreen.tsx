@@ -1,11 +1,11 @@
 import { SafeAreaView, Text, Button } from 'react-native'
 import React from 'react'
 
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { StackScreenProps } from '@react-navigation/stack'
 
 import { ExampleStackParamList } from '../navigators/types'
 
-type NavigationProps = NativeStackScreenProps<ExampleStackParamList, 'Example'>
+type NavigationProps = StackScreenProps<ExampleStackParamList, 'Example'>
 
 const ExampleScreen = ({ navigation }: NavigationProps): JSX.Element => {
   return (

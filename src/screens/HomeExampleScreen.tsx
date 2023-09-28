@@ -1,11 +1,11 @@
 import React from 'react'
 import { View, Text, Button } from 'react-native'
 
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { StackScreenProps } from '@react-navigation/stack'
 
 import { ExampleStackParamList } from '../navigators/types'
 
-type NavigationProps = NativeStackScreenProps<ExampleStackParamList, 'HomeExample'>
+type NavigationProps = StackScreenProps<ExampleStackParamList, 'HomeExample'>
 
 const HomeExampleScreen = ({ navigation }: NavigationProps): JSX.Element => {
 

@@ -1,12 +1,13 @@
 import React from 'react'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
+
+import { createStackNavigator } from '@react-navigation/stack'
 
 import ExampleScreen from '../screens/ExampleScreen'
 import HomeExampleScreen from '../screens/HomeExampleScreen'
 import { ExampleStackParamList } from './types'
 
 
-const Stack = createNativeStackNavigator<ExampleStackParamList>()
+const Stack = createStackNavigator<ExampleStackParamList>()
 
 const ExampleStackNavigator = () => {
   return (
