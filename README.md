@@ -374,8 +374,52 @@ Install the pods for iOS development by running the following command:
 npx pod-install ios
 ```
 
-For further explanation see [here](https://reactnavigation.org/docs/getting-started/#installation) and [here](https://reactnavigation.org/docs/stack-navigator#installation)
+For further explanation see [here](https://reactnavigation.org/docs/getting-started/#installation) and [here](https://reactnavigation.org/docs/stack-navigator#installation).
 
 ### Type Checking
 
-For further Navigation type checking setup check out [this guide](https://reactnavigation.org/docs/typescript)
+#### Step 1
+
+Create the type for the stack and screens:
+
+```
+export type ExampleStackParamList = {
+    Example: undefined
+    HomeExample: undefined
+}
+```
+
+#### Step 2
+
+Type check the stack:
+
+```
+const Stack = createStackNavigator<ExampleStackParamList>()
+
+const ExampleStackNavigator = () => {
+  return (
+    <Stack.Navigator>
+        <Stack.Screen name="HomeExample" component={HomeExampleScreen} />
+    </Stack.Navigator>
+  )
+}
+
+export default ExampleStackNavigator
+```
+
+#### Step 3
+
+Type check the screen:
+
+```
+type NavigationProps = StackScreenProps<ExampleStackParamList, 'HomeExample'>
+
+const HomeExampleScreen = ({ navigation }: NavigationProps): JSX.Element => {
+
+  return (
+    ...
+  )
+}
+```
+
+For further Navigation type checking setup check out [this guide](https://reactnavigation.org/docs/typescript).
