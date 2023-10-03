@@ -328,10 +328,54 @@ bundle exec fastlane android beta
 
 ## Navigation
 
-### Installation
+### Installation and Setup
 
-For navigation setup follow **ALL** the installation steps listed [here](https://reactnavigation.org/docs/getting-started/)
+#### Step 1
+
+Install the react-navigation native package and all of its dependencies running the following commands:
+
+```bash
+npm install @react-navigation/native
+```
+
+```bash
+npm install react-native-screens react-native-safe-area-context
+```
+
+```bash
+npx pod-install ios
+```
+
+#### Step 2
+
+Install the stack navigator package and its dependecies by running the following commands:
+
+```bash
+npm install @react-navigation/stack
+```
+
+```bash
+npm install react-native-gesture-handler
+```
+
+In order to complete the react-native-gesture-handler installation, add the following line at the top of `App.tsx` file:
+
+`import 'react-native-gesture-handler'`
+
+To use UIKit style animations for the header install the following package:
+
+```bash
+npm install @react-native-masked-view/masked-view
+```
+
+Install the pods for iOS development by running the following command:
+
+```bash
+npx pod-install ios
+```
+
+For further explanation see [here](https://reactnavigation.org/docs/getting-started/#installation) and [here](https://reactnavigation.org/docs/stack-navigator#installation)
 
 ### Type Checking
 
-For Navigation type checking setup follow the steps listed [here](https://reactnavigation.org/docs/typescript)
+For further Navigation type checking setup check out [this guide](https://reactnavigation.org/docs/typescript)
