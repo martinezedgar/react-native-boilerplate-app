@@ -9,8 +9,8 @@ platform :android do
     lane :beta do
     build
     appcenter_upload(
-        api_token: ENV["TEST_APPCENTER_API_TOKEN"],
-        owner_name: ENV["TEST_APPCENTER_OWNER_NAME"],
+        api_token: ENV["APPCENTER_API_TOKEN"],
+        owner_name: ENV["APPCENTER_OWNER_NAME"],
         app_name: ENV["APPCENTER_APP_NAME"],
         apk: ENV["APPCENTER_DISTRIBUTE_APK"]
         )
