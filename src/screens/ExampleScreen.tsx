@@ -3,7 +3,7 @@ import React from 'react'
 
 import { StackScreenProps } from '@react-navigation/stack'
 
-import { ExampleStackParamList } from '../navigators/types'
+import { ExampleStackParamList } from '../navigation/types'
 
 type NavigationProps = StackScreenProps<ExampleStackParamList, 'Example'>
 

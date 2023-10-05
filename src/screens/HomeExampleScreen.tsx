@@ -3,7 +3,7 @@ import { View, Text, Button } from 'react-native'
 
 import { StackScreenProps } from '@react-navigation/stack'
 
-import { ExampleStackParamList } from '../navigators/types'
+import { ExampleStackParamList } from '../navigation/types'
 
 type NavigationProps = StackScreenProps<ExampleStackParamList, 'HomeExample'>
 
