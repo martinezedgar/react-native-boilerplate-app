@@ -10,6 +10,6 @@ import {render} from '../../../utils/test-utils'
 
 const navigation: any = {}
 
-it('should render Home Example Screen', () => {
+it('should render Example Screen', () => {
   render(<ExampleScreen {...navigation}/>);
 });

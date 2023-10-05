@@ -2,8 +2,8 @@ import {render} from '@testing-library/react-native'
 
 const AllTheProviders = ({children}) => {
   return (
-    <> // Wrap this in providers as needed
-    {children}
+    <> 
+    {children} // Wrap children in providers as needed
     </>
   )
 }

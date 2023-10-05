@@ -423,3 +423,61 @@ const HomeExampleScreen = ({ navigation }: NavigationProps): JSX.Element => {
 ```
 
 For further Navigation type checking setup check out [this guide](https://reactnavigation.org/docs/typescript).
+
+
+## Testing
+
+### Installation
+
+Install React Testing Library for React Native
+
+```bash
+npm install -D @testing-library/react-native
+```
+
+### Setup
+
+Create a `./utils/test-utils.js` file with following content:
+
+```
+import {render} from '@testing-library/react-native'
+
+const AllTheProviders = ({children}) => {
+  return (
+    <> 
+    {children} // Wrap children in providers as needed
+    </>
+  )
+}
+
+const customRender = (ui, options) =>
+  render(ui, {wrapper: AllTheProviders, ...options})
+
+// re-export everything
+export * from '@testing-library/react-native'
+
+// override render method
+export {customRender as render}
+```
+
+### Example
+
+```
+import 'react-native';
+import React from 'react';
+import ExampleScreen from '../ExampleScreen';
+import {it} from '@jest/globals';
+import {render} from '../../../utils/test-utils'
+
+const navigation: any = {}
+
+it('should render Example Screen', () => {
+  render(<ExampleScreen {...navigation}/>);
+});
+```
+
+To run the tests use the following command:
+
+```bash
+npm test
+```
