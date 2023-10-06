@@ -277,13 +277,13 @@ Once the app is created go to the `Settings` menu on the left. In `Settings` go 
 Add the following environment variables to the environment variables file.
 
 ```
-TEST_APPCENTER_API_TOKEN="123456asdfg"
-TEST_APPCENTER_OWNER_NAME="owner-name"
+APPCENTER_API_TOKEN="123456asdfg"
+APPCENTER_OWNER_NAME="owner-name"
 APPCENTER_APP_NAME="my-app"
 APPCENTER_DISTRIBUTE_APK="./android/app/build/outputs/apk/release/app-release.apk"
 ```
 
->The value for `TEST_APPCENTER_OWNER_NAME` and `APPCENTER_APP_NAME` should be written as they appear on the App Center URL (e.g. `https://appcenter.ms/users/owner-name/apps/app-name/settings`)
+>The value for `APPCENTER_OWNER_NAME` and `APPCENTER_APP_NAME` should be written as they appear on the App Center URL (e.g. `https://appcenter.ms/users/owner-name/apps/app-name/settings`)
 
 #### Step 6
 
@@ -309,8 +309,8 @@ platform :android do
     lane :beta do
     build
     appcenter_upload(
-        api_token: ENV["TEST_APPCENTER_API_TOKEN"],
-        owner_name: ENV["TEST_APPCENTER_OWNER_NAME"],
+        api_token: ENV["APPCENTER_API_TOKEN"],
+        owner_name: ENV["APPCENTER_OWNER_NAME"],
         app_name: ENV["APPCENTER_APP_NAME"],
         apk: ENV["APPCENTER_DISTRIBUTE_APK"]
         )
@@ -325,6 +325,49 @@ Run the following command to deploy a beta version to App Center.
 ```bash
 bundle exec fastlane android beta
 ```
+
+## Codemagic CI/CD
+
+### Setup
+
+Create a new account [here](https://codemagic.io/signup).
+
+Follow the app configuration helper.
+
+Add the environment variables used in the app (e.g. APP_CENTER_API_TOKEN)
+
+Create a `codemagic.yaml` file in the root directory of the project with the following content:
+
+```
+workflows:
+  react-native-android-beta-app-center:
+    name: React Native Android Beta App Center
+    max_build_duration: 120
+    instance_type: mac_mini_m1
+    environment:
+      groups:
+        - staging
+      node: v18.17.1
+    scripts:
+      - npm install
+      - npm test
+      - bundle install
+      - bundle exec fastlane android beta
+    triggering:
+      events: # List the events that trigger builds
+        - push
+      branch_patterns: # Include or exclude watched branches
+        - pattern: 'main'
+          include: true
+          source: true
+```
+
+Lastly, commit and push the changes to the remote repository.
+
+>Remember to use the same group name configured in codemagic app's environment variables.
+
+>For more information about the `codemagic.yaml` file checkout this [documentation](https://docs.codemagic.io/yaml-quick-start/building-a-react-native-app/)
+
 
 ## Navigation
 
