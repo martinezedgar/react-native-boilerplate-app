@@ -1,10 +1,13 @@
 import {render} from '@testing-library/react-native'
+import { Provider } from 'react-redux'
+
+import store from '../src/store/config'
 
 const AllTheProviders = ({children}) => {
   return (
-    <> 
-    {children} // Wrap children in providers as needed
-    </>
+    <Provider store={store}>
+      {children}
+    </Provider>
   )
 }
 
