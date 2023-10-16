@@ -12,19 +12,35 @@ export const exampleApi = createApi({
       query: () => `posts/`,
     }),
     getPost: builder.query<Post, string>({
-      query: (id) => `posts/${id}`,
+      query: (id) => {
+        return `posts/${id}`
+      },
     }),
     getPostComment: 
-      builder.query<Comment, {postId: string, commentId: string}>({
-       query: ({postId, commentId}) => (
-        `posts/${postId}/comments?id=${commentId}`
-        ),
+      builder.query<Comment[], {postId: string, commentId: string}>({
+       query: (args) => {
+        const {postId, commentId} = args
+        return `posts/${postId}/comments?id=${commentId}`
+      },
     }),
+    createNewPost:
+      builder.mutation<Post, Partial<Post>>({
+        query: ({userId, title, body}) => ({
+          url: `posts`,
+          method: 'POST',
+          body:{
+            title,
+            body,
+            userId
+          }
+        })
+      })
   }),
 })
 
 export const {
   useGetPostsQuery,
-  useGetPostQuery,
-  useGetPostCommentQuery,
+  useLazyGetPostQuery,
+  useLazyGetPostCommentQuery,
+  useCreateNewPostMutation,
 } = exampleApi
