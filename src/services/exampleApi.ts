@@ -23,7 +23,7 @@ export const exampleApi = createApi({
         return `posts/${postId}/comments?id=${commentId}`
       },
     }),
-    createNewPost:
+    createPost:
       builder.mutation<Post, Partial<Post>>({
         query: ({userId, title, body}) => ({
           url: `posts`,
@@ -33,7 +33,7 @@ export const exampleApi = createApi({
             body,
             userId
           }
-        })
+        }),
       })
   }),
 })
@@ -42,5 +42,5 @@ export const {
   useGetPostsQuery,
   useLazyGetPostQuery,
   useLazyGetPostCommentQuery,
-  useCreateNewPostMutation,
+  useCreatePostMutation,
 } = exampleApi

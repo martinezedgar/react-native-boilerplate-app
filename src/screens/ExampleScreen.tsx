@@ -9,7 +9,7 @@ import {
   useGetPostsQuery,
   useLazyGetPostQuery,
   useLazyGetPostCommentQuery,
-  useCreateNewPostMutation,
+  useCreatePostMutation,
 } from '../services/exampleApi'
 
 type NavigationProps = StackScreenProps<ExampleStackParamList, 'Example'>
@@ -17,10 +17,10 @@ type NavigationProps = StackScreenProps<ExampleStackParamList, 'Example'>
 const ExampleScreen = ({ navigation }: NavigationProps): JSX.Element => {
   const count = useAppSelector( state => state.exampleCounter.value)
   const dispatch = useAppDispatch()
-  const { data: posts, error, isError, isFetching, isLoading} = useGetPostsQuery()
+  const { data: posts, isLoading} = useGetPostsQuery()
   const [getPost, {data: lazyPost}] = useLazyGetPostQuery()
+  const [createPost, {data: newPost, error}] = useCreatePostMutation()
   const [getPostComment, {data: lazyPostComment}] = useLazyGetPostCommentQuery()
-  const [createNewPost, newPostResult] = useCreateNewPostMutation()
 
   return (
     <SafeAreaView className="flex-1 justify-center items-center">
@@ -87,30 +87,30 @@ const ExampleScreen = ({ navigation }: NavigationProps): JSX.Element => {
       {
         <View className='flex-1 justify-center items-center'>
           {
-            newPostResult.data &&
+            newPost &&
             <View className=''>
               <View className='flex flex-row'>
                 <Text className='font-bold'>User Id: </Text>
-                <Text>{newPostResult.data.userId}</Text>
+                <Text>{newPost.userId}</Text>
               </View>
               <View className='flex flex-row'>
                 <Text className='font-bold'>Id: </Text>
-                <Text>{newPostResult.data.id}</Text>
+                <Text>{newPost.id}</Text>
               </View>
               <View>
                 <Text className='font-bold'>Title: </Text>
-                <Text>{newPostResult.data.title}</Text>
+                <Text>{newPost.title}</Text>
               </View>
               <View>
                 <Text className='font-bold'>Body: </Text>
-                <Text>{newPostResult.data.body}</Text>
+                <Text>{newPost.body}</Text>
               </View>
             </View>
           }
           <View>
             <Button
-              title='Create new post'
-              onPress={() => createNewPost({
+              title='Create post'
+              onPress={() => createPost({
                 userId: 1,
                 title: 'New Post',
                 body: 'This is a new post'
