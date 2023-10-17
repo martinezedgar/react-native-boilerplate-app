@@ -1,5 +1,8 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
+import {persistStore, persistReducer, PERSIST} from 'redux-persist'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 import { exampleCounterSlice } from './slices/exampleCounter'
 import { exampleApi } from '../services/exampleApi'
 
@@ -8,11 +11,23 @@ const rootReducer = combineReducers({
   [exampleApi.reducerPath]: exampleApi.reducer,
 })
 
+const persistConfig = {
+  key: 'root',
+  storage: AsyncStorage,
+  blacklist: []
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
 export const store = configureStore({
-  reducer: rootReducer,
+  reducer: persistedReducer,
   middleware: getDefaultMiddleware =>
-      getDefaultMiddleware()
-        .concat(exampleApi.middleware)
+      getDefaultMiddleware({
+        serializableCheck: {
+          ignoredActions: [PERSIST],
+        },
+      })
+      .concat(exampleApi.middleware)
 })
 
 setupListeners(store.dispatch)
@@ -20,5 +35,7 @@ setupListeners(store.dispatch)
 export type RootState = ReturnType<typeof store.getState>
 
 export type AppDispatch = typeof store.dispatch
+
+export const persistor = persistStore(store)
 
 export default store

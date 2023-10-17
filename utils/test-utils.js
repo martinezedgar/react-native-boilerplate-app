@@ -1,12 +1,16 @@
 import {render} from '@testing-library/react-native'
 import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
 
 import store from '../src/store/config'
+import persistor from '../src/store/config'
 
 const AllTheProviders = ({children}) => {
   return (
     <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
       {children}
+    </PersistGate>
     </Provider>
   )
 }
