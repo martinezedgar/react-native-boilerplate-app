@@ -1,5 +1,5 @@
 import React from 'react'
-import { SafeAreaView, View, Text, Button } from 'react-native'
+import { SafeAreaView, View, Text, Button, ScrollView, StyleSheet } from 'react-native'
 import { StackScreenProps } from '@react-navigation/stack'
 
 import { useAppSelector, useAppDispatch } from '../store/hooks'
@@ -23,26 +23,29 @@ const ExampleScreen = ({ navigation }: NavigationProps): JSX.Element => {
   const [getPostComment, {data: lazyPostComment}] = useLazyGetPostCommentQuery()
 
   return (
-    <SafeAreaView className="flex-1 justify-center items-center">
-      <Text className="text-red-500 font-bold">ExampleScreen</Text>
-      {
-        posts &&
-        <View className='flex-1'>
-          <View className='flex flex-row'>
-            <Text className='font-bold'>Post Id: </Text>
-            <Text>{posts[0].id}</Text>
-          </View>
-          <View>
-            <Text className='font-bold'>Post Title: </Text>
-            <Text>{posts[0].title}</Text>
-          </View>
+    <SafeAreaView className="flex flex-1">
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View className='flex flex-1 justify-center items-center py-[5px] my-[5px]'>
+          <Text className="text-red-500 font-bold">ExampleScreen</Text>
+          {
+            posts &&
+            <View className='flex-1'>
+              <View className='flex flex-row'>
+                <Text className='font-bold'>Post Id: </Text>
+                <Text>{posts[0].id}</Text>
+              </View>
+              <View>
+                <Text className='font-bold'>Post Title: </Text>
+                <Text>{posts[0].title}</Text>
+              </View>
+            </View>
+          }
         </View>
-      }
-      {
-        <View className='flex-1 justify-center items-center'>
+
+        <View className='flex flex-1 justify-center items-center py-[5px] my-[5px]'>
           {
             lazyPost &&
-            <View className=''>
+            <View className='flex-1'>
               <View className='flex flex-row'>
                 <Text className='font-bold'>Post Id: </Text>
                 <Text>{lazyPost.id}</Text>
@@ -53,19 +56,18 @@ const ExampleScreen = ({ navigation }: NavigationProps): JSX.Element => {
               </View>
             </View>
           }
-          <View>
+          <View className='m-[10px]'>
             <Button
               title='Get post #3'
               onPress={() => getPost('3')}
             />
           </View>
         </View>
-      }
-      {
-        <View className='flex-1 justify-center items-center'>
+
+        <View className='flex-1 justify-center items-center py-[5px] my-[5px]'>
           {
             lazyPostComment &&
-            <View className=''>
+            <View className='flex-1'>
               <View className='flex flex-row'>
                 <Text className='font-bold'>Id: </Text>
                 <Text>{lazyPostComment[0].id}</Text>
@@ -76,19 +78,18 @@ const ExampleScreen = ({ navigation }: NavigationProps): JSX.Element => {
               </View>
             </View>
           }
-          <View>
+          <View className='m-[10px]'>
             <Button
               title='Get the second comment of the first post'
               onPress={() => getPostComment({postId: '1', commentId: '2'})}
             />
           </View>
         </View>
-      }
-      {
-        <View className='flex-1 justify-center items-center'>
+
+        <View className='flex-1 justify-center items-center py-[5px] my-[5px]'>
           {
             newPost &&
-            <View className=''>
+            <View className='flex-1'>
               <View className='flex flex-row'>
                 <Text className='font-bold'>User Id: </Text>
                 <Text>{newPost.userId}</Text>
@@ -97,17 +98,17 @@ const ExampleScreen = ({ navigation }: NavigationProps): JSX.Element => {
                 <Text className='font-bold'>Id: </Text>
                 <Text>{newPost.id}</Text>
               </View>
-              <View>
+              <View className='flex flex-row'>
                 <Text className='font-bold'>Title: </Text>
                 <Text>{newPost.title}</Text>
               </View>
-              <View>
+              <View className='flex flex-row'>
                 <Text className='font-bold'>Body: </Text>
                 <Text>{newPost.body}</Text>
               </View>
             </View>
           }
-          <View>
+          <View className='m-[10px]'>
             <Button
               title='Create post'
               onPress={() => createPost({
@@ -118,26 +119,32 @@ const ExampleScreen = ({ navigation }: NavigationProps): JSX.Element => {
             />
           </View>
         </View>
-      }
-      <View className='flex-1 flex-row justify-between items-center'>
-        <Button
-          title="-"
-          onPress={() => dispatch(decrement())}
-        />
-        <Text>{count}</Text>
-        <Button
-          title="+"
-          onPress={() => dispatch(increment())}
-        />
-      </View>
+        <View className='flex-1 flex-row justify-center items-center py-[5px] my-[5px]'>
+          <Button
+            title="-"
+            onPress={() => dispatch(decrement())}
+          />
+          <Text>{count}</Text>
+          <Button
+            title="+"
+            onPress={() => dispatch(increment())}
+          />
+        </View>
+      </ScrollView>
       <View className='mb-2'>
-        <Button
-          title='Go to Home Example'
-          onPress={() => navigation.navigate('HomeExample')}
-        />
-      </View>
+      <Button
+        title='Go to Home Example'
+        onPress={() => navigation.navigate('HomeExample')}
+      />
+    </View>
     </SafeAreaView>
   )
 }
+
+const styles = StyleSheet.create({
+  scrollContainer: {
+    padding: 5
+  },
+})
 
 export default ExampleScreen
