@@ -11,9 +11,15 @@ const Stack = createStackNavigator<ExampleStackParamList>()
 
 const ExampleStackNavigator = () => {
   return (
-    <Stack.Navigator>
-        <Stack.Screen name="HomeExample" component={HomeExampleScreen} />
-        <Stack.Screen name="Example" component={ExampleScreen} />
+    <Stack.Navigator
+      screenOptions={{}}
+    >
+      <Stack.Screen
+        name="HomeExample"
+        component={HomeExampleScreen}
+        options={({ route, navigation}) => ({ title: route.name})}
+      />
+      <Stack.Screen name="Example" component={ExampleScreen} />
     </Stack.Navigator>
   )
 }
