@@ -17,38 +17,46 @@ type NavigationProps = StackScreenProps<ExampleStackParamList, 'Example'>
 const ExampleScreen = ({ navigation }: NavigationProps): JSX.Element => {
   const count = useAppSelector( state => state.exampleCounter.value)
   const dispatch = useAppDispatch()
-  const { data: posts, isLoading} = useGetPostsQuery()
+  const { data: posts, isLoading, error: getPostsError} = useGetPostsQuery()
   const [getPost, {data: lazyPost}] = useLazyGetPostQuery()
-  const [createPost, {data: newPost, error}] = useCreatePostMutation()
+  const [createPost, {data: newPost, error: createPostError}] = useCreatePostMutation()
   const [getPostComment, {data: lazyPostComment}] = useLazyGetPostCommentQuery()
 
   return (
     <SafeAreaView className="flex flex-1">
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View className='flex flex-1 justify-center items-center py-[5px] my-[5px]'>
-          <Text className="text-red-500 font-bold">ExampleScreen</Text>
+        <View className='flex-1 p-[5px] m-[5px]'>
           {
             posts &&
             <View className='flex-1'>
-              <View className='flex flex-row'>
+              <View className='flex-1 flex-row'>
                 <Text className='font-bold'>Post Id: </Text>
-                <Text>{posts[0].id}</Text>
+                <Text className='text-justify'>{posts[0].id}</Text>
               </View>
-              <View>
+              <View className='flex-1'>
                 <Text className='font-bold'>Post Title: </Text>
                 <Text>{posts[0].title}</Text>
               </View>
             </View>
           }
         </View>
+        {
+          getPostsError &&
+          'originalStatus' in getPostsError &&
+          'error' in getPostsError &&
+          <View>
+            <Text className='text-red-500'>Status: {getPostsError.originalStatus}</Text>
+            <Text className='text-red-500'>Error: {JSON.stringify(getPostsError.error)}</Text>
+          </View>
+        }
 
-        <View className='flex flex-1 justify-center items-center py-[5px] my-[5px]'>
+        <View className='flex-1 p-[5px] m-[5px]'>
           {
             lazyPost &&
             <View className='flex-1'>
-              <View className='flex flex-row'>
+              <View className='flex-row'>
                 <Text className='font-bold'>Post Id: </Text>
-                <Text>{lazyPost.id}</Text>
+                <Text className='text-justify'>{lazyPost.id}</Text>
               </View>
               <View>
                 <Text className='font-bold'>Post Title: </Text>
@@ -64,12 +72,12 @@ const ExampleScreen = ({ navigation }: NavigationProps): JSX.Element => {
           </View>
         </View>
 
-        <View className='flex-1 justify-center items-center py-[5px] my-[5px]'>
+        <View className='flex-1 p-[5px] m-[5px]'>
           {
             lazyPostComment &&
             <View className='flex-1'>
               <View className='flex flex-row'>
-                <Text className='font-bold'>Id: </Text>
+                <Text className='font-bold'>Comment Id: </Text>
                 <Text>{lazyPostComment[0].id}</Text>
               </View>
               <View>
@@ -86,7 +94,7 @@ const ExampleScreen = ({ navigation }: NavigationProps): JSX.Element => {
           </View>
         </View>
 
-        <View className='flex-1 justify-center items-center py-[5px] my-[5px]'>
+        <View className='flex-1 p-[5px] m-[5px]'>
           {
             newPost &&
             <View className='flex-1'>
@@ -106,6 +114,15 @@ const ExampleScreen = ({ navigation }: NavigationProps): JSX.Element => {
                 <Text className='font-bold'>Body: </Text>
                 <Text>{newPost.body}</Text>
               </View>
+            </View>
+          }
+          {
+            createPostError &&
+            'originalStatus' in createPostError &&
+            'error' in createPostError &&
+            <View>
+              <Text className='text-red-500'>Status: {createPostError.originalStatus}</Text>
+              <Text className='text-red-500'>Error: {JSON.stringify(createPostError.error)}</Text>
             </View>
           }
           <View className='m-[10px]'>
