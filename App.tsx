@@ -1,13 +1,13 @@
 import React from 'react';
 
 import 'react-native-gesture-handler';
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
-import { NavigationContainer } from '@react-navigation/native';
-import { useColorScheme } from 'nativewind';
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
+import {NavigationContainer} from '@react-navigation/native';
+import {useColorScheme} from 'nativewind';
 
-import { persistor } from './src/store/config';
-import store from './src/store/config'
+import {persistor} from './src/store/config';
+import store from './src/store/config';
 import ExampleStackNavigator from './src/navigation/ExampleStackNavigator';
 
 const lightTheme = {
@@ -20,7 +20,7 @@ const lightTheme = {
     border: '#c7c7cc',
     notification: '#ff443a',
   },
-}
+};
 
 const darkTheme = {
   dark: true,
@@ -32,20 +32,21 @@ const darkTheme = {
     border: '#c7c7cc',
     notification: '#ff443a',
   },
-}
+};
 
 function App(): JSX.Element {
-  const { colorScheme } = useColorScheme()
+  const {colorScheme} = useColorScheme();
 
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <NavigationContainer theme={colorScheme == 'dark' ? darkTheme : lightTheme}>
+        <NavigationContainer
+          theme={colorScheme === 'dark' ? darkTheme : lightTheme}>
           <ExampleStackNavigator />
         </NavigationContainer>
       </PersistGate>
     </Provider>
-  )
+  );
 }
 
 export default App;

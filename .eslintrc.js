@@ -1,4 +1,10 @@
 module.exports = {
   root: true,
-  extends: '@react-native',
+  env: {
+    jest: true,
+  },
+  globals: {
+    JSX: 'readonly',
+  },
+  extends: ['@react-native', 'eslint:recommended'],
 };

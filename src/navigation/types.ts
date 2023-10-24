@@ -1,4 +1,4 @@
 export type ExampleStackParamList = {
-    Example: undefined
-    HomeExample: undefined
-}
+  Example: undefined;
+  HomeExample: undefined;
+};

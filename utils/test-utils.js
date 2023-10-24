@@ -1,25 +1,26 @@
-import {render} from '@testing-library/react-native'
-import { Provider } from 'react-redux'
-import { PersistGate } from 'redux-persist/integration/react'
+import React from 'react';
+import {render} from '@testing-library/react-native';
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
 
-import store from '../src/store/config'
-import persistor from '../src/store/config'
+import store from '../src/store/config';
+import persistor from '../src/store/config';
 
 const AllTheProviders = ({children}) => {
   return (
     <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      {children}
-    </PersistGate>
+      <PersistGate loading={null} persistor={persistor}>
+        {children}
+      </PersistGate>
     </Provider>
-  )
-}
+  );
+};
 
 const customRender = (ui, options) =>
-  render(ui, {wrapper: AllTheProviders, ...options})
+  render(ui, {wrapper: AllTheProviders, ...options});
 
 // re-export everything
-export * from '@testing-library/react-native'
+export * from '@testing-library/react-native';
 
 // override render method
-export {customRender as render}
+export {customRender as render};
