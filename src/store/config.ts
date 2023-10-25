@@ -3,8 +3,8 @@ import {setupListeners} from '@reduxjs/toolkit/query';
 import {persistStore, persistReducer, PERSIST} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {exampleCounterSlice} from './slices/exampleCounter';
-import {exampleApi} from '../services/exampleApi';
+import {exampleCounterSlice} from '@store/slices/exampleCounter';
+import {exampleApi} from '@services/exampleApi';
 
 const rootReducer = combineReducers({
   exampleCounter: exampleCounterSlice.reducer,

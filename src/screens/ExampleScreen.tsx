@@ -9,15 +9,15 @@ import {
 } from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 
-import {useAppSelector, useAppDispatch} from '../store/hooks';
-import {decrement, increment} from '../store/slices/exampleCounter';
-import {ExampleStackParamList} from '../navigation/types';
+import {useAppSelector, useAppDispatch} from '@store/hooks';
+import {decrement, increment} from '@store/slices/exampleCounter';
+import {ExampleStackParamList} from '@navigation/types';
 import {
   useGetPostsQuery,
   useLazyGetPostQuery,
   useLazyGetPostCommentQuery,
   useCreatePostMutation,
-} from '../services/exampleApi';
+} from '@services/exampleApi';
 
 type NavigationProps = StackScreenProps<ExampleStackParamList, 'Example'>;
 
