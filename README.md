@@ -531,7 +531,7 @@ function App(): JSX.Element {
 }
 ```
 
-### Working with Redux state
+### Using Redux state
 
 Import `useAppSelector` and `useAppDispatch`.
 
@@ -565,7 +565,113 @@ const dispatch = useAppDispatch();
 
 ### RTK Query Setup
 
+Create an API slice, with the queries and mutation needed. For example:
 
+```
+import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+
+import {Post, Comment} from '@services/types';
+
+const baseUrl: string = 'https://jsonplaceholder.typicode.com/';
+
+export const exampleApi = createApi({
+  reducerPath: 'exampleApi',
+  baseQuery: fetchBaseQuery({baseUrl: baseUrl}),
+  endpoints: builder => ({
+    getPosts: builder.query<Post[], void>({
+      query: () => 'posts/',
+    }),
+    getPost: builder.query<Post, string>({
+      query: id => {
+        return `posts/${id}`;
+      },
+    }),
+    getPostComment: builder.query<
+      Comment[],
+      {postId: string; commentId: string}
+    >({
+      query: args => {
+        const {postId, commentId} = args;
+        return `posts/${postId}/comments?id=${commentId}`;
+      },
+    }),
+    createPost: builder.mutation<Post, Partial<Post>>({
+      query: ({userId, title, body}) => ({
+        url: 'posts',
+        method: 'POST',
+        body: {
+          title,
+          body,
+          userId,
+        },
+      }),
+    }),
+  }),
+});
+
+export const {
+  useGetPostsQuery,
+  useLazyGetPostQuery,
+  useLazyGetPostCommentQuery,
+  useCreatePostMutation,
+} = exampleApi;
+```
+
+In the store configuration file, add the API slice to the store middleware:
+
+```
+import {exampleApi} from '@services/exampleApi';
+import { configureStore } from '@reduxjs/toolkit'
+import { exampleCounterSlice } from './slices/exampleCounter'
+
+export const store = configureStore({
+  reducer: {
+    exampleCounter: exampleCounterSlice.reducer,
+    middleware: getDefaultMiddleware =>
+      getDefaultMiddleware()
+        .concat(exampleApi.middleware)
+  },
+})
+```
+
+### Using RTK Query
+
+Import the hooks created in the API slice, and use the returned data.
+
+```
+const {data: posts, error: getPostsError} = useGetPostsQuery();
+```
+
+```
+<View>
+  {posts && (
+    <View>
+      <View>
+        <Text>Post Id: </Text>
+        <Text>{posts[0].id}</Text>
+      </View>
+      <View>
+        <Text>Post Title: </Text>
+        <Text>{posts[0].title}</Text>
+      </View>
+    </View>
+  )}
+</View>
+{
+  getPostsError &&
+    'originalStatus' in getPostsError &&
+    'error' in getPostsError && (
+      <View>
+        <Tex>
+          Status: {getPostsError.originalStatus}
+        </Tex>
+        <Text>
+          Error: {JSON.stringify(getPostsError.error)}
+        </Text>
+      </View>
+    )
+}
+```
 
 ## Testing
 
