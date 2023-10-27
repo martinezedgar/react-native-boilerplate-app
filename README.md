@@ -429,6 +429,144 @@ const HomeExampleScreen = ({ navigation }: NavigationProps): JSX.Element => {
 >For further Navigation type checking setup check out [this guide](https://reactnavigation.org/docs/typescript).
 
 
+
+## RTK
+
+### Installation
+
+Install RTK.
+
+```bash
+npm install @reduxjs/toolkit
+```
+
+>This will install `@reduxjs/toolkit`, `react-redux`, and `@types/react-redux`. If for any reason some of the packages are not installed, proceed to install them manually.
+
+### Redux Setup
+
+Create a new configuration file for the store, this could be in `./src/store/config.ts`, with the following content:
+
+```
+import { configureStore } from '@reduxjs/toolkit'
+import { exampleCounterSlice } from './slices/exampleCounter'
+
+export const store = configureStore({
+  reducer: {
+    exampleCounter: exampleCounterSlice.reducer
+  },
+})
+
+
+export type RootState = ReturnType<typeof store.getState>
+
+export type AppDispatch = typeof store.dispatch
+
+export default store
+```
+
+Create the `exampleCounterSlice` in `./src/store/slices/exampleCounter.ts` with the following content:
+
+```
+import { createSlice } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import type { RootState } from '../config'
+
+interface ExampleCounterState {
+  value: number
+}
+
+const initialState: ExampleCounterState = {
+  value: 0,
+}
+
+export const exampleCounterSlice = createSlice({
+  name: 'exampleCounter',
+  initialState,
+  reducers: {
+    increment: (state) => {
+      state.value += 1
+    },
+    decrement: (state) => {
+      state.value -= 1
+    },
+    incrementByAmount: (state, action: PayloadAction<number>) => {
+      state.value += action.payload
+    },
+  },
+})
+
+export const { increment, decrement, incrementByAmount } = exampleCounterSlice.actions
+
+export const selectCount = (state: RootState) => state.exampleCounter.value
+
+export default exampleCounterSlice.reducer
+```
+
+Create a `hooks` file in `./src/store/hooks.ts` with the typed version of `useDispatch` and `useSelector`, with the following content:
+
+```
+import { useDispatch, useSelector } from 'react-redux'
+import type { TypedUseSelectorHook } from 'react-redux'
+import type { RootState, AppDispatch } from './config'
+
+// Use throughout your app instead of plain `useDispatch` and `useSelector`
+export const useAppDispatch: () => AppDispatch = useDispatch
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+```
+
+Add the redux `Provider` to `App.tsx`:
+```
+...
+import { Provider } from 'react-redux';
+import store from './src/store/config';
+
+function App(): JSX.Element {
+  return (
+    <Provider store={store}>
+      <NavigationContainer>
+        <ExampleStackNavigator />
+      </NavigationContainer>
+    </Provider>
+  )
+}
+```
+
+### Working with Redux state
+
+Import `useAppSelector` and `useAppDispatch`.
+
+```
+import {useAppSelector, useAppDispatch} from '../store/hooks';
+```
+
+Import the needed actions.
+
+```
+import {decrement, increment} from '../store/slices/exampleCounter';
+```
+
+Select the needed state.
+
+```
+const count = useAppSelector(state => state.exampleCounter.value);
+```
+
+Dispatch the actions and use the state where needed.
+
+```
+const dispatch = useAppDispatch();
+
+<View >
+  <Button title="-" onPress={() => dispatch(decrement())} />
+    <Text>{count}</Text>
+  <Button title="+" onPress={() => dispatch(increment())} />
+</View>
+```
+
+### RTK Query Setup
+
+
+
 ## Testing
 
 ### Installation
@@ -444,24 +582,32 @@ npm install -D @testing-library/react-native
 Create a `./utils/test-utils.js` file with following content:
 
 ```
-import {render} from '@testing-library/react-native'
+import React from 'react';
+import {render} from '@testing-library/react-native';
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
+
+import {store, persistor} from '@store/config';
 
 const AllTheProviders = ({children}) => {
   return (
-    <> 
-    {children} // Wrap children in providers as needed
-    </>
-  )
-}
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        {children}
+      </PersistGate>
+    </Provider>
+  );
+};
 
 const customRender = (ui, options) =>
-  render(ui, {wrapper: AllTheProviders, ...options})
+  render(ui, {wrapper: AllTheProviders, ...options});
 
 // re-export everything
-export * from '@testing-library/react-native'
+export * from '@testing-library/react-native';
 
 // override render method
-export {customRender as render}
+export {customRender as render};
+
 ```
 
 ### Example
@@ -533,4 +679,3 @@ module.exports = {
 ```
 
 > In the propery `alias` add the `paths` you added in `tsconfigfile.json`
-

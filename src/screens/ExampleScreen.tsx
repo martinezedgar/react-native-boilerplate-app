@@ -48,18 +48,20 @@ const ExampleScreen = ({navigation}: NavigationProps): JSX.Element => {
             </View>
           )}
         </View>
-        {getPostsError &&
-          'originalStatus' in getPostsError &&
-          'error' in getPostsError && (
-            <View>
-              <Text className="text-red-500">
-                Status: {getPostsError.originalStatus}
-              </Text>
-              <Text className="text-red-500">
-                Error: {JSON.stringify(getPostsError.error)}
-              </Text>
-            </View>
-          )}
+        {
+          getPostsError &&
+            'originalStatus' in getPostsError &&
+            'error' in getPostsError && (
+              <View>
+                <Text className="text-red-500">
+                  Status: {getPostsError.originalStatus}
+                </Text>
+                <Text className="text-red-500">
+                  Error: {JSON.stringify(getPostsError.error)}
+                </Text>
+              </View>
+            )
+        }
 
         <View className="flex-1 p-[5px] m-[5px]">
           {lazyPost && (
