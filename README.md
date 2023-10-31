@@ -784,4 +784,70 @@ module.exports = {
 };
 ```
 
-> In the propery `alias` add the `paths` you added in `tsconfigfile.json`
+> In the propery `alias` add the `paths` you added in `tsconfig.json` file.
+
+## Custom Fonts
+
+### Setup
+
+Choose a folder to save the `.ttf` files of the custom fonts. For example `./src/assets/fonts/OpenSans-Regular.ttf`.
+
+If the file doesn't exist, create a `react-native.config.js` file with the following content:
+
+```
+module.exports = {
+  project: {
+      ios:{},
+      android:{}
+  },
+  assets:['./src/assets/fonts/'],
+}
+```
+
+In the `assets` property, use the path to the font files location.
+
+### Link the font file
+
+Every time you add a new font file run the following commands:
+
+```bash
+npx react-native-asset
+```
+
+```bash
+npm start --reset-cache
+```
+
+For Android:
+```bash
+npm run android
+```
+
+For iOS:
+```bash
+npm run ios
+```
+
+### Using the custom fonts
+
+Add a new entry in the `fontFamily` property in `tailwind.config.js` at `theme/extend`.
+
+```
+theme: {
+  extend: {
+    fontFamily: {
+      'open-regular': ['OpenSans-Regular'],
+      'open-bold': ['OpenSans-Bold'],
+    },
+  },
+},
+```
+
+It is important to note here that `NativeWind` will detect only the first element in the array of any `fontFamily` entry.
+
+```
+<Text className='font-open-bold text-xl'>Post Title: </Text>
+<Text className='font-open-regular'>{posts[0].title}</Text>
+```
+
+>When using custom fonts in React Native for Android do not add any other font modifier like `Font Style` or `Font Weight` because it will go back to the `default` font family. Only `Font Size` is allowed.

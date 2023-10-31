@@ -37,13 +37,13 @@ const ExampleScreen = ({navigation}: NavigationProps): JSX.Element => {
         <View className="flex-1 p-[5px] m-[5px]">
           {posts && (
             <View className="flex-1">
-              <View className="flex-1 flex-row">
-                <Text className="font-bold">Post Id: </Text>
-                <Text className="text-justify">{posts[0].id}</Text>
+              <View className="flex-1 flex-row items-center">
+                <Text className="font-open-bold text-lg">Post Id: </Text>
+                <Text className="font-open-regular text-base">{posts[0].id}</Text>
               </View>
               <View className="flex-1">
-                <Text className="font-bold">Post Title: </Text>
-                <Text>{posts[0].title}</Text>
+                <Text className='font-open-bold text-lg'>Post Title: </Text>
+                <Text className='font-open-regular text-base'>{posts[0].title}</Text>
               </View>
             </View>
           )}
