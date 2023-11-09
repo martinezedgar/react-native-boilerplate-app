@@ -96,7 +96,7 @@ Start styling.
 
 Create a folder named `./fastlane` in the root directory of the project
 
-Inside that folder create a file named `Fasfile` with the following content:
+Inside that folder create a file named `Fastfile` with the following content:
 
 ```
 platform :android do
@@ -141,7 +141,7 @@ Run the following command:
 gem install bundler
 ```
 
-Add the following line to the ./Gemfile in the root directory of the project.
+Add the following line to the `Gemfile` in the root directory of the project.
 
 ```
 ...
@@ -233,6 +233,12 @@ android {
 ```
 
 >Make sure to use here the same variable names used in the `~/.gradle/gradle.properties` file.
+
+Install the gems:
+
+```bash
+bundle install
+```
 
 Run the following command to build the app:
 
