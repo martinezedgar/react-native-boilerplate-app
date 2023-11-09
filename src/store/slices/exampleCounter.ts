@@ -1,7 +1,7 @@
-import {createSlice} from '@reduxjs/toolkit';
-import type {PayloadAction} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
-import type {RootState} from '@store/config';
+import type { RootState } from '@store/config';
 
 interface ExampleCounterState {
   value: number;
@@ -27,7 +27,7 @@ export const exampleCounterSlice = createSlice({
   },
 });
 
-export const {increment, decrement, incrementByAmount} =
+export const { increment, decrement, incrementByAmount } =
   exampleCounterSlice.actions;
 
 export const selectCount = (state: RootState) => state.exampleCounter.value;

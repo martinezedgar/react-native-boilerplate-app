@@ -1,10 +1,10 @@
-import {configureStore, combineReducers} from '@reduxjs/toolkit';
-import {setupListeners} from '@reduxjs/toolkit/query';
-import {persistStore, persistReducer, PERSIST} from 'redux-persist';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query';
+import { persistStore, persistReducer, PERSIST } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {exampleCounterSlice} from '@store/slices/exampleCounter';
-import {exampleApi} from '@services/exampleApi';
+import { exampleCounterSlice } from '@store/slices/exampleCounter';
+import { exampleApi } from '@services/exampleApi';
 
 const rootReducer = combineReducers({
   exampleCounter: exampleCounterSlice.reducer,

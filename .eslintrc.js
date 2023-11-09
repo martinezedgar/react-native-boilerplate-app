@@ -7,4 +7,7 @@ module.exports = {
     JSX: 'readonly',
   },
   extends: ['@react-native', 'eslint:recommended'],
+  rules: {
+    'jsx-quotes': 0,
+  },
 };
