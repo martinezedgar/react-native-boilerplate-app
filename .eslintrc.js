@@ -9,5 +9,6 @@ module.exports = {
   extends: ['@react-native', 'eslint:recommended'],
   rules: {
     'jsx-quotes': 0,
+    'react-hooks/exhaustive-deps': 0,
   },
 };
