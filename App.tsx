@@ -34,7 +34,7 @@ const darkTheme = {
   },
 };
 
-function App(): JSX.Element {
+function App(): React.JSX.Element {
   const { colorScheme } = useColorScheme();
 
   return (
